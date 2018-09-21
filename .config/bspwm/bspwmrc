@@ -25,6 +25,7 @@ bspc rule -a Plasmoidviewer state=floating
 bspc rule -a keepassxc      state=floating
 bspc rule -a gimp	    state=floating
 
+powerline-daemon &
 sxhkd &
 compton &
 naga -start &

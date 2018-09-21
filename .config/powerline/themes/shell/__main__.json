@@ -1,0 +1,19 @@
+{
+	"segment_data": {
+                "user": {
+                        "args": {
+                                "hide_user": "errata"
+                        }
+                },
+		"hostname": {
+			"args": {
+				"only_if_ssh": true
+			}
+		},
+		"cwd": {
+			"args": {
+				"dir_limit_depth": 3
+			}
+		}
+	}
+}
