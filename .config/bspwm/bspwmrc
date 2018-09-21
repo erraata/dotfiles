@@ -28,6 +28,7 @@ bspc rule -a gimp	    state=floating
 powerline-daemon &
 sxhkd &
 compton &
+sleep 2
 naga -start &
 ~/.local/bin/notify-listener.py &
 ~/.config/bspwm/sidebar-youtube.sh &

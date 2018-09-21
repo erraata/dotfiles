@@ -18,12 +18,10 @@ css siblings selectors if you want to keep it when the tab bar is visible. */
 }
 
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"); /* only needed once */
-
-:-moz-any(#content,#appcontent) browser{
- margin-right:-14px!important;
- overflow-y:scroll;
- margin-bottom:-14px!important;
- overflow-x:scroll;
+browser {
+    margin-right: -17px !important;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 #forward-button {
