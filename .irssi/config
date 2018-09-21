@@ -390,10 +390,10 @@ statusbar = {
       visible = "always";
 
       items = {
-        act = { priority = "-1"; };
-        prompt = { priority = "-1"; };
-        prompt_empty = { priority = "-1"; };
-        input = { priority = "10"; };
+        prompt = { priority = "-3"; alignment = "right"; };
+        prompt_empty = { priority = "-1"; alignment = "right"; };
+        act = { priority = "3"; alignment = "right"; };
+        input = { priority = "-1"; alignment = "left"; };
       };
     };
 
