@@ -1,0 +1,35 @@
+#! /bin/sh
+
+bspc monitor -d I II III IV V
+
+bspc config border_width         0
+bspc config window_gap          10
+bspc config top_padding		30
+bspc config right_padding	1030
+
+bspc config split_ratio            0.5
+bspc config initial_polarity       second_child
+bspc config borderless_monocle     true
+bspc config gapless_monocle        false
+bspc config focus_follows_pointer  false 
+bspc config click_to_focus         true
+bspc config external_rules_command ~/.config/bspwm/external_rules
+
+bspc rule -a plasmashell    state=floating
+bspc rule -a Plasma         state=floating
+bspc rule -a plasma-desktop state=floating
+bspc rule -a krunner        state=floating
+bspc rule -a Kmix           state=floating
+bspc rule -a Klipper        state=floating
+bspc rule -a Plasmoidviewer state=floating
+bspc rule -a keepassxc      state=floating
+bspc rule -a gimp	    state=floating
+
+sxhkd &
+compton &
+naga -start &
+~/.local/bin/notify-listener.py &
+~/.config/bspwm/sidebar-youtube.sh &
+~/.config/bspwm/sidebar-irc.sh &
+steam -silent &
+keepassxc &
