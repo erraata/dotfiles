@@ -1,0 +1,35 @@
+[General]
+FreeFloating=true
+history=keepassx,firef,reboot,/home/errata/.config/bspwm/sidebar-irc.sh,logout,dolphin,poweroff,reboot now,sys,font,sy,spe,gim,gi,thund,compton-,timer,konsole,plasma,desktop activity,pidgin,sk,sp,kate,steam,kwin,xkill,notification ,chr,sett,default,fo,autostart,shutdown,removable,keepass,window ,restart,fir,Sy
+
+[PlasmaRunnerManager]
+LaunchCounts=3 services_org.kde.dolphin.desktop,1 services_kcm_desktoptheme.desktop,1 windows_0_62914566,1 services_kwinrules.desktop,3 services_pidgin.desktop,1 services_kcmnotify.desktop,1 services_gimp.desktop,1 services_qtquicksettings.desktop,1 org.kde.windowedwidgets_org.kde.plasma.timer,1 services_fontinst.desktop,3 services_systemsettings.desktop,1 services_autostart.desktop,1 services_firefox.desktop,1 services_org.kde.konsole.desktop,5 services_kwinscripts.desktop,6 services_org.keepassxc.KeePassXC.desktop,47 desktopsessions_1,1 services_kcm_workspace.desktop,2 services_google-chrome.desktop,1 services_thunderbird.desktop,1 shell_xkill,1 services_kcm_plasmasearch.desktop,1 desktopsessions_2,3 services_org.kde.kate.desktop,1 services_componentchooser.desktop,1 services_steam.desktop,1 services_compton-conf.desktop,1 desktopsessions_3
+
+[Plugins]
+CharacterRunnerEnabled=true
+DictionaryEnabled=true
+Kill RunnerEnabled=true
+PIM Contacts Search RunnerEnabled=true
+PowerDevilEnabled=true
+Spell CheckerEnabled=false
+baloosearchEnabled=true
+bookmarksEnabled=true
+browsertabsEnabled=true
+calculatorEnabled=true
+desktopsessionsEnabled=true
+katesessionsEnabled=true
+konsoleprofilesEnabled=true
+krunner_appstreamEnabled=false
+kwinEnabled=true
+locationsEnabled=true
+org.kde.activitiesEnabled=false
+org.kde.datetimeEnabled=true
+org.kde.windowedwidgetsEnabled=true
+placesEnabled=true
+plasma-desktopEnabled=true
+recentdocumentsEnabled=true
+servicesEnabled=true
+shellEnabled=true
+unitconverterEnabled=true
+webshortcutsEnabled=true
+windowsEnabled=true
