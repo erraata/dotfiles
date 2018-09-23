@@ -339,7 +339,7 @@ statusbar = {
     topic_empty = " Irssi v$J - http://www.irssi.org";
 
     lag = "{sb Lag: $0-}";
-    act = "{sb Act: $0-}";
+    act = "{sb $0-}";
     more = "-- more --";
   };
 

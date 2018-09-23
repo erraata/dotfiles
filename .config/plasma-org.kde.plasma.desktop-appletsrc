@@ -7,7 +7,7 @@ wheel:Vertical;NoModifier=org.kde.switchdesktop
 RightButton;NoModifier=org.kde.contextmenu
 
 [AppletGlobals][org.kde.plasma.notifications]
-popupPosition=2
+popupPosition=8
 
 [Containments][2]
 activityId=
@@ -157,8 +157,8 @@ plugin=org.kde.desktopcontainment
 wallpaperplugin=org.kde.image
 
 [Containments][21][ConfigDialog]
-DialogHeight=2110
-DialogWidth=1412
+DialogHeight=837
+DialogWidth=1028
 
 [Containments][21][Configuration]
 PreloadWeight=0
@@ -168,7 +168,12 @@ pressToMoveHelp=false
 showToolbox=false
 
 [Containments][21][Wallpaper][org.kde.image][General]
-Image=/home/errata/Wallpaper/wallhaven-638733.jpg
+FillMode=2
+Image=file:///home/errata/.local/share/wallpapers/43542703342_ec0e0dae03_o.jpg
+
+[Containments][21][Wallpaper][org.kde.potd][General]
+FillMode=2
+Provider=wcpotd
 
 [Containments][25][Applets][27][Configuration]
 PreloadWeight=26
@@ -256,7 +261,7 @@ knownItems=org.kde.plasma.volumewin7mixer,org.kde.kdeconnect,org.kde.plasma.vaul
 showAllItems=true
 
 [General]
-immutability=1
+immutability=2
 
 [ScreenMapping]
 itemsOnDisabledScreens=0,3,desktop:/youtube.desktop,desktop:/test,desktop:/chrome-cifbnlhelolligmjogaleiipdnkmimcb-Default.desktop

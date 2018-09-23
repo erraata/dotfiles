@@ -2,7 +2,9 @@
 
 bspc monitor -d I II III IV V
 
-bspc config border_width         0
+bspc config border_width        1 
+bspc config normal_border_color "#000000"
+bspc config focused_border_color "#00d0ff"
 bspc config window_gap          10
 bspc config top_padding		30
 bspc config right_padding	1030
