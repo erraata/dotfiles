@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/bash
 
 FLOATING_DESKTOP_ID=$(bspc query -D -d '^5')
 desk_id=$(bspc query -D -d "${5:-focused}")
