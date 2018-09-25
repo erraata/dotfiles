@@ -13,6 +13,8 @@ super + d
 shift + Escape
 	xdotool keyup shift+Escape && xdotool key asciitilde
 
+super + y
+	mpvctl -c `xclip -o`
 #
 # bspwm hotkeys
 #

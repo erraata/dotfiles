@@ -1,0 +1,3 @@
+image/gif; mpvctl -c '%s'
+video/*; mpvctl -c '%s'
+image/*; feh '%s'

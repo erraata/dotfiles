@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/sh
 
 bspc monitor -d I II III IV V
 
@@ -7,7 +7,7 @@ bspc config normal_border_color    "#000000"
 bspc config focused_border_color   "#00d0ff"
 bspc config window_gap             10
 bspc config top_padding		   30
-bspc config left_padding 	   810 
+bspc config left_padding 	   813
 
 bspc config split_ratio            0.5
 bspc config initial_polarity       first_child
@@ -15,7 +15,7 @@ bspc config borderless_monocle     false
 bspc config gapless_monocle        false
 bspc config focus_follows_pointer  false 
 bspc config click_to_focus         true
-bspc config external_rules_command ~/scripts/bsp_external_rules.sh
+bspc config external_rules_command ~/scripts/bsp-external-rules
 
 bspc rule -a plasmashell    state=floating
 bspc rule -a Plasma         state=floating
@@ -26,6 +26,6 @@ bspc rule -a Klipper        state=floating
 bspc rule -a Plasmoidviewer state=floating
 bspc rule -a keepassxc      state=floating
 bspc rule -a gimp	    state=floating
-bspc rule -a mpv	    state=floating
-
-~/scripts/bsp_startup.sh
+bspc rule -a mpv	    state=floating sticky=on
+bspc rule -a feh	    state=floating
+~/scripts/bsp-startup
