@@ -1,0 +1,11 @@
+#!/bin/bash
+
+powerline-daemon &
+sxhkd &
+compton &
+naga -start &
+notify-listener.py &
+sleep 2
+steam -silent &
+keepassxc &
+bsp-sidebar &

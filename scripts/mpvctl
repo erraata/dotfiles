@@ -1,0 +1,322 @@
+#!/bin/bash
+# Desc:   Control mpv (or other music players) externally
+# Author: M3taX <m3tax@disroot.org>
+# Source: https://github.com/m3tax/dotfiles/blob/master/.scripts/mpvctl
+
+
+# Default mpv socket
+socket="/tmp/mpvctl.sock"
+
+# Help
+help() {
+	cat << EOF
+SYNOPSIS
+   $(basename $0) [OPTIONS] [PLAYER COMMANDS | -c ...]
+
+DESCRIPTION
+   Control mpv (or other music players) externally.
+
+   To run mpv commands, simply launch it with the \`-c\` flag, followed by
+   all the arguments you would normally give to mpv. Other $(basename $0)
+   arguments should go before \`-c\`, or they'll be passed to mpv.
+
+   Player commands can be run for mpv or for other players with the \`-p\` flag.
+   If mpv is not running, it will fallback to the players in the order below.
+   Supported music players: mpd, moc, cmus, spotify
+
+   You can also run multiple commands, for multiple players at the same time.
+   For example: \`$(basename $0) -p "spotify mpv" beg truepause\` will go to
+   the beginning of the current spotify and mpv songs and pause them.
+
+   By default, if multiple mpv instances are launched, they will be queued up
+   in the same playlist. You can launch 2 windows at the same time with the
+   \`-n\` flag, although only the last one will respond to player commands.
+
+OPTIONS
+   -h, --help                Print this help message
+   -c, --command [COMMAND]   Mpv options and file/url to play
+   -p, --player [PLAYER]     Run player commands for other music players
+   -s, --socket [FILE]       Use a custem socket file
+   -S, --print-socket        Print socket file location and exit
+   -n, --no-queue            Don't queue up, launch separate instance
+   -d, --no-detach           Don't detach mpv process from the terminal
+
+PLAYER COMMANDS
+   Mpv only
+      fullscreen             Go fullscreen
+      toggle                 Show/hide video
+      command [COMMAND]      Send input command
+      goto [NUMBER]          Go to the playlist item with that number
+      kill                   Kill ALL mpv instances
+
+   Universal
+      pause                  Toggle pause/play
+      truepause              Pause player (no toggle)
+      stop                   Stop playing
+      seek [SECONDS]         Seek that amount of seconds
+      lilfor                 Seek 10 seconds forward
+      bigfor                 Seek 120 seconds forward
+      lilbak                 Seek 10 seconds backward
+      bigbak                 Seek 120 seconds backward
+      beg                    Seek to the beginning
+      next                   Go to next song in playlist
+      prev                   Go to previous song in playlist
+      sleep [TIME]           Wait before running the next command
+      kill                   Kill player daemon
+EOF
+} >&2
+
+# Choose player
+player_select() {
+	case "$1" in
+		mpv)
+			pause() { echo '{"command": ["cycle", "pause"]}' | socket ;}
+			truepause() { echo '{"command": ["set_property", "pause", true]}' | socket ;}
+			next() { echo '{"command": ["playlist_next"]}' | socket ;}
+			prev() { echo '{"command": ["playlist_prev"]}' | socket ;}
+			lilfor() { echo '{"command": ["seek", "10"]}' | socket ;}
+			bigfor() { echo '{"command": ["seek", "120"]}' | socket ;}
+			lilbak() { echo '{"command": ["seek", "-10"]}' | socket ;}
+			bigbak() { echo '{"command": ["seek", "-120"]}' | socket ;}
+			seek() { echo '{"command": ["seek", "'$1'"]}' | socket ;}
+			beg() { echo '{"command": ["seek", "0", "absolute"]}' | socket ;}
+			stop() { echo '{"command": ["quit"]}' | socket ;}
+			kill() { pkill -x mpv ;}
+			goto() {
+				echo "{\"command\": \
+					[\"set_property\", \"playlist-pos-1\", \"${1:-1}\"]}" | socket
+			}
+			command() {
+				echo "{\"command\": \
+					[$(echo "$@" | sed -E 's/(\w+)/\"\1\",/g; s/.$//g')]}" | socket
+			}
+			toggle() {
+				if pgrep -x i3; then
+					if [[ $(echo '{"command": ["get_property", "video"]}' |
+						socket | sed -E 's/^.*:(\w+),.*/\1/g') == false ]]; then
+							i3-msg 'mark last-window_mpvctl'
+							echo '{"command": ["set_property", "video", 1]}' | socket
+							xdotool search --all --sync --onlyvisible --class 'mpv'
+							i3-msg '[con_mark="^last-window_mpvctl$"] focus'
+							i3-msg 'unmark last-window_mpvctl'
+					else
+						echo '{"command": ["set_property", "video", false]}' | socket
+					fi
+				else
+					echo '{"command": ["cycle", "video"]}' | socket
+				fi
+			}
+			fullscreen() {
+				if pgrep -x i3; then
+					if [[ $(echo '{"command": ["get_property", "fullscreen"]}' |
+						socket | sed -E 's/.*:(\w+),.*/\1/g') == true ]]; then
+							echo '{"command": ["set_property", "fullscreen", false]}' | socket
+							i3-msg '[con_mark="^last-window_mpvctl$"] focus'
+							i3-msg 'unmark last-window_mpvctl'
+					else
+						i3-msg 'mark last-window_mpvctl'
+						echo '{"command": ["set_property", "fullscreen", true]}' | socket
+					fi
+				else
+					echo '{"command": ["cycle", "fullscreen"]}' | socket
+				fi
+			}
+			;;
+		spotify)
+			pause() { dbus-send --print-reply \
+				--dest=org.mpris.MediaPlayer2.spotify \
+				/org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause ;}
+			truepause() { dbus-send --print-reply \
+				--dest=org.mpris.MediaPlayer2.spotify \
+				/org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Pause ;}
+			play() { dbus-send --print-reply \
+				--dest=org.mpris.MediaPlayer2.spotify \
+				/org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Play ;}
+			stop() { dbus-send --print-reply \
+				--dest=org.mpris.MediaPlayer2.spotify \
+				/org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Stop ;}
+			next() { dbus-send --print-reply \
+				--dest=org.mpris.MediaPlayer2.spotify \
+				/org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next ;}
+			prev() { dbus-send --print-reply \
+				--dest=org.mpris.MediaPlayer2.spotify \
+				/org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous ;}
+			lilfor() { dbus-send --print-reply \
+				--dest=org.mpris.MediaPlayer2.spotify \
+				/org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Seek ;}
+			bigfor() { dbus-send --print-reply \
+				--dest=org.mpris.MediaPlayer2.spotify \
+				/org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Seek ;}
+			kill() { pkill -x spotify ;}
+			;;
+		mpd)
+			pause() { mpc toggle ;}
+			truepause() { mpc pause ;}
+			stop() { mpc stop ;}
+			next() { mpc next ;}
+			prev() { mpc prev ;}
+			lilfor() { mpc seek +10 ;}
+			bigfor() { mpc seek +120 ;}
+			lilbak() { mpc seek -10 ;}
+			bigbak() { mpc seek -120 ;}
+			seek() { mpc seek $1 ;}
+			beg() { mpc seek 0% ;}
+			kill() { pkill -x mpd ;}
+			;;
+		moc)
+			pause() { mocp -G ;}
+			truepause() { mocp -P ;}
+			stop() { mocp -s ;}
+			next() { mocp -f ;}
+			prev() { mocp -r ;}
+			lilfor() { mocp -k 10 ;}
+			bigfor() { mocp -k 120 ;}
+			lilbak() { mocp -k -10 ;}
+			bigbak() { mocp -k -120 ;}
+			seek() { mocp -k $1 ;}
+			beg() { mocp -j 0% ;}
+			kill() { pkill -x mocp ;}
+			;;
+		cmus)
+			pause() { cmus-remote -u ;}
+			next() { cmus-remote -n ;}
+			prev() { cmus-remote -r ;}
+			stop() { cmus-remote -s ;}
+			lilfor() { cmus-remote -k +10 ;}
+			bigfor() { cmus-remote -k +120 ;}
+			lilbak() { cmus-remote -k -10 ;}
+			bigbak() { cmus-remote -k -120 ;}
+			seek() { cmus-remote -k $1 ;}
+			beg() { cmus-remote -k 00:00:00 ;}
+			kill() { pkill -x cmus ;}
+			;;
+		*)
+			echo "$(basename $0): Invalid player \"$1\"." >&2
+			skip_player=1
+			err=1
+	esac
+}
+
+# Run all given commands for $player
+run_command() {
+	while [[ $# > 0 ]]; do
+		if [[ $(type -t "$1") == function || $1 == sleep ]]; then
+			case "$1" in
+				sleep|seek|goto)
+					$1 $2
+					shift 1
+					;;
+				command)
+					$@ 1>&2
+					shift $(($#-1))
+					;;
+				*)
+					$1
+					;;
+			esac
+		else
+			echo "$(basename $0): Invalid command \"$1\"${player+ for $player}." >&2
+			err=1
+		fi
+		shift 1
+	done
+}
+
+# Pass all commands in $playercmd to run_command() for each given player
+player_command() {
+	while [[ $# > 0 ]]; do
+		player_select $1
+		[[ -z $skip_player ]] && run_command ${playercmd[@]}
+		unset skip_player
+		shift 1
+	done
+}
+
+# Socket command
+socket() { socat - "\"$socket\"" ;}
+
+# Print help if there are no arguments
+if [[ $# = 0 ]]; then
+	help
+	exit 1
+fi
+
+# Flags
+while [[ $# > 0 ]]; do
+	case "$1" in
+		-h|--help) # Help
+			help
+			exit 0
+			;;
+		-c|--command) # Mpv command
+			shift 1
+			break
+			;;
+		-p|--player) # Music player
+			player="$2"
+			shift 1
+			;;
+		-s|--socket) # Custom socket path
+			socket="$2"
+			shift 1
+			;;
+		-S|--print-socket) # Print socket path
+			echo "$socket"
+			exit 0
+			;;
+		-n|--no-queue) # Disable queuing
+			noqueue=1
+			;;
+		-d|--no-detach) # Disable process detaching
+			nodetach=1
+			;;
+		-*) # Unrecognized option
+			echo "$(basename $0): Invalid option \"$1\"."
+			err=1
+			;;
+		*) # Player commands
+			playercmd+=( "$@" )
+			shift $#
+			break
+			;;
+	esac
+	shift 1
+done
+
+# Make folder if it doesn't exist
+mkdir -p "$(dirname "$socket")"
+
+# Launch mpv
+if [[ $# > 0 ]]; then
+	# Try to queue up
+	if [[ -n $noqueue || ! -S $socket ]] ||
+	! echo "{\"command\": [\"loadfile\", \"${@: -1}\",\"append-play\"]}" |
+	socket > /dev/null; then
+		if [[ -n $nodetach ]]; then # Don't detach
+			mpv --input-ipc-server="$socket" "$@"
+			rm -f "$socket"
+		else # Detach
+			(mpv --input-ipc-server="$socket" "$@"
+			 rm -f "$socket") > /dev/null 2>&1 &disown
+		fi
+	fi
+else # Run player commands
+	if [[ -z $player ]]; then
+		if [[ -S $socket ]]; then
+			player="mpv"
+		else # Find fallback player
+			for fallback in mpd moc cmus spotify; do
+				[[ -z $player ]] && pgrep -x "$fallback" > /dev/null &&
+					player="$fallback"
+			done
+		fi
+	fi
+	player_command $player > /dev/null
+fi
+
+# Error status
+if [[ -n $err ]]; then
+	echo "$(basename $0): Run \`$(basename $0) --help\` for more information."
+	exit 1
+fi
+
