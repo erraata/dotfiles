@@ -20,7 +20,7 @@ bspc config external_rules_command ~/scripts/bsp-external-rules
 bspc rule -a plasmashell    state=floating
 bspc rule -a Plasma         state=floating
 bspc rule -a plasma-desktop state=floating
-bspc rule -a krunner        state=floating
+bspc rule -a krunner        state=floating border=off
 bspc rule -a Kmix           state=floating
 bspc rule -a Klipper        state=floating
 bspc rule -a Plasmoidviewer state=floating

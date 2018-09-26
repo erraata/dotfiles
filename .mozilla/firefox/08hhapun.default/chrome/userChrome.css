@@ -17,6 +17,10 @@ css siblings selectors if you want to keep it when the tab bar is visible. */
 	min-height: var(--tab-min-height)
 }
 
+#tabbrowser-tabs .tabbrowser-tab .tab-close-button {
+	display:none!important;
+}
+
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"); /* only needed once */
 #nav-bar { display: none; }
 

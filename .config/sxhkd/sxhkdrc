@@ -57,8 +57,8 @@ super + {o,i}
 	bspc wm -h on
 
 # focus or send to the given desktop
-super + {_,shift + }{1-9,0}
-	bspc {desktop -f,node -d} '^{1-9,10}'
+super + {_,shift + }{1-5}
+	bspc {desktop -f,node -d} '^{1-5}'
 
 #
 # preselect
@@ -95,3 +95,21 @@ super + alt + shift + {h,j,k,l}
 # move a floating window
 super + {Left,Down,Up,Right}
 	bspc node -v {-20 0,0 20,0 -20,20 0}
+
+super + shift + f
+	bspc node @/ -F vertical
+
+super + 9
+	playerctl -a previous
+
+super + 0
+	playerctl -a next
+
+super + 8
+	playerctl -a play-pause
+
+super + equal
+	amixer -D pulse set Master 5%+
+
+super + minus
+	amixer -D pulse set Master 5%-

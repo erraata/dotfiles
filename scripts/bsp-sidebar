@@ -1,21 +1,24 @@
 #!/bin/bash
 
-sleep 5
+pid () { xdotool search --onlyvisible --name $1; }
+rule () { bspc rule -a $1 -o state=floating sticky=on; }
+move () { wmctrl -i -r $1 -e $2; }
 
-# irssi
-bspc rule -a konsole -o state=floating sticky=on
-konsole -e irssi &
-sleep 1
-wmctrl -i -r $(xdotool search --onlyvisible --name irssi) -e 0,10,1761,800,385
-
-# google keep
-bspc rule -a Firefox -o state=floating sticky=on
-firefox -new-window "https://keep.google.com" &
-sleep 4
-wmctrl -i -r $(xdotool search --onlyvisible --name Keep) -e 0,10,1100,800,647
-
-# inoreader
-bspc rule -a Firefox -o state=floating sticky=on
-firefox -new-window "https://www.inoreader.com/all_articles" &
-sleep 4
-wmctrl -i -r $(xdotool search --onlyvisible --name Inoreader) -e 0,10,504,800,582
+if [ -z $(pid "irssi") ]; then
+	rule "konsole"
+	konsole -e irssi &
+	sleep 2
+	move $(pid "irssi") "0,10,1761,800,385"
+fi
+if [ -z $(pid "Keep") ]; then
+	rule "Firefox"
+	firefox -new-window "https://keep.google.com" &
+	sleep 3
+	move $(pid "Keep") "0,10,1100,800,647"
+fi
+if [ -z $(pid "Inoreader") ]; then
+	rule "Firefox"
+	firefox -new-window "https://www.inoreader.com/all_articles" &
+	sleep 3
+	move $(pid "Inoreader") "0,10,504,800,582"
+fi

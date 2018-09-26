@@ -4,8 +4,10 @@ powerline-daemon &
 sxhkd &
 compton &
 naga -start &
-notify-listener.py &
 sleep 2
 steam -silent &
 keepassxc &
+sleep 5
 bsp-sidebar &
+sleep 5
+flashfocus &
