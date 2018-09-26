@@ -1,0 +1,3 @@
+#!/bin/bash
+bspc node @/ -F vertical
+bspc node -f west
