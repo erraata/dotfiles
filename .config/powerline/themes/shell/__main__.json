@@ -12,7 +12,10 @@
 		},
 		"cwd": {
 			"args": {
-				"dir_limit_depth": 3
+				"dir_limit_depth": 2, 
+				"shorten_home": false,
+				"ellipsis": null,
+				"use_path_separator": false
 			}
 		}
 	}
