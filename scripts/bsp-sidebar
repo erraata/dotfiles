@@ -5,9 +5,9 @@ rule () { bspc rule -a $1 -o state=floating sticky=on; }
 move () { wmctrl -i -r $1 -e $2; }
 
 if [ -z $(pid "irssi") ]; then
-	rule "konsole"
-	konsole -e irssi &
-	sleep 2
+	rule "Termite"
+	termite -e irssi &
+	sleep 3
 	move $(pid "irssi") "0,10,1761,800,385"
 fi
 if [ -z $(pid "Keep") ]; then

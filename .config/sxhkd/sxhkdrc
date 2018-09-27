@@ -4,7 +4,7 @@
 
 # terminal emulator
 super + Return
-	konsole
+	termite
 
 # program launcher
 super + d
@@ -97,7 +97,7 @@ super + {Left,Down,Up,Right}
 	bspc node -v {-20 0,0 20,0 -20,20 0}
 
 super + semicolon
-	bsp-flip
+	bsp-flip-x
 
 super + 9
 	playerctl -a previous

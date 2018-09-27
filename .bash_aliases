@@ -1,1 +1,1 @@
-alias rtvm='rtv --enable-media'
+alias rtvm='mpvctl'
