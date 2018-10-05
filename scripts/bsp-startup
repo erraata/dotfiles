@@ -11,3 +11,4 @@ sleep 5
 bsp-sidebar &
 sleep 5
 flashfocus &
+GMusicProxy -f

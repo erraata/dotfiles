@@ -99,6 +99,9 @@ super + {Left,Down,Up,Right}
 super + semicolon
 	bsp-flip-x
 
+super + apostrophe
+    bsp-flip-y
+
 super + 9
 	playerctl -a previous
 

@@ -3,3 +3,8 @@ set laststatus=2
 set t_Co=256
 set number
 set clipboard=unnamedplus,unnamed
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set expandtab
+set autoindent

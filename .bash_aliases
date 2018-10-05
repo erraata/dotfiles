@@ -1,1 +1,1 @@
-alias rtvm='mpvctl'
+alias py='python3'
