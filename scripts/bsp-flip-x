@@ -1,0 +1,9 @@
+#!/bin/bash
+wl=`bspc query -T -n focused | jq .client.tiledRectangle.x`
+if [ "$wl" -ge "2331" ]; then
+	bspc node @/ -F vertical
+#	bspc node -f east
+else
+	bspc node @/ -F vertical
+	bspc node -f west
+fi
