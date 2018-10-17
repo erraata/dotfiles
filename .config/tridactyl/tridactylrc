@@ -1,0 +1,39 @@
+" bovine3dom's dogfood
+
+" Provided only as an example.
+" Do not install/run without reading through as you may be surprised by some
+" of the settings.
+ 
+" May require the latest beta builds.
+
+" Move this to $XDG_CONFIG_DIR/tridactyl/tridactylrc (that's
+" ~/.config/tridactyl/tridactylrc to mere mortals) or ~/.tridactylrc and
+" install the native messenger (:installnative in Tridactyl). Run :source to
+" get it in the browser, or just restart.
+
+" NB: If you want "vim-like" behaviour where removing a line from 
+" here makes the setting disappear, uncomment the line below.
+
+"sanitise tridactyllocal tridactylsync
+
+"
+" Binds
+"
+
+" Comment toggler for Reddit and Hacker News
+bind c hint -c [class*="expand"],[class="togg"]
+bind v hint -W exclaim_quiet mpvctl -c
+bind w hint -w
+bind <C-[> back
+
+"
+" Misc settings
+"
+
+" Make Tridactyl work on more sites at the expense of some security
+set csp clobber
+fixamo_quiet
+
+set allowautofocus false
+set modeindicator false
+set yankto both

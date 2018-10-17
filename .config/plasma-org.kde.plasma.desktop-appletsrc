@@ -134,7 +134,7 @@ immutability=1
 plugin=org.kde.plasma.systemtray
 
 [Containments][2][Applets][6][Configuration]
-PreloadWeight=7
+PreloadWeight=0
 SystrayContainmentId=7
 
 [Containments][2][ConfigDialog]
@@ -192,7 +192,7 @@ immutability=1
 plugin=org.kde.plasma.volumewin7mixer
 
 [Containments][7][Applets][10][Configuration]
-PreloadWeight=17
+PreloadWeight=0
 
 [Containments][7][Applets][10][Configuration][Applet]
 showVisualFeedback=false

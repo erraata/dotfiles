@@ -109,7 +109,7 @@ super + 0
 	playerctl -a next
 
 super + 8
-	playerctl -a play-pause
+	mpris-fav
 
 super + equal
 	amixer -D pulse set Master 5%+
